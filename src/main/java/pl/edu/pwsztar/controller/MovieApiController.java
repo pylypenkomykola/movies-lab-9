@@ -42,6 +42,6 @@ public class MovieApiController {
         LOGGER.info("create movie: {}", createMovieDto);
 
         // TODO: Prosze dokonczyc implementacje
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
