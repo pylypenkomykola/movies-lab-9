@@ -38,10 +38,19 @@ public class MovieApiController {
 
     @CrossOrigin
     @PostMapping(value = "/movies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> createMovie(@RequestBody CreateMovieDto createMovieDto) {
+    public ResponseEntity<Void> createMovie(@RequestBody CreateMovieDto createMovieDto) {
         LOGGER.info("create movie: {}", createMovieDto);
 
-        // TODO: Prosze dokonczyc implementacje
+        movieService.creatMovie(createMovieDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @CrossOrigin
+    @DeleteMapping(value = "/movies/{movieId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Void> deleteMovie(@PathVariable Long movieId) {
+        LOGGER.info("delete movie: {}", movieId);
+
+        movieService.deleteMovie(movieId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -3,10 +3,10 @@ package pl.edu.pwsztar.domain.dto;
 import java.io.Serializable;
 
 public class MovieDto implements Serializable {
-
     private Long movieId;
     private String title;
     private String image;
+    private Integer year;
 
     public MovieDto() {
     }
@@ -33,5 +33,13 @@ public class MovieDto implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 }
