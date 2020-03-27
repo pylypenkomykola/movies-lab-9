@@ -35,13 +35,13 @@
                 contentType: 'application/json',
                 success: function () {
                     console.log('Movie deleted: ', movieId);
+                    location.reload();
                 },
                 error: function() {
                     $('#target').html("<b style='color: red;'>Coś poszło nie tak... Nie można usunąć filmu</b>");
                     console.log('movieId: ', movieId);
                 }
             });
-            location.reload();
         }
 
 		function isImage(url) {
