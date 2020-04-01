@@ -13,6 +13,7 @@ import pl.edu.pwsztar.domain.repository.MovieRepository;
 import pl.edu.pwsztar.service.MovieService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -36,17 +37,18 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieDto> findAll() {
         List<Movie> movies = movieRepository.findAll();
-        return movieListMapper.mapToDto(movies);
+        return movieListMapper.convert(movies);
     }
 
     @Override
     public void creatMovie(CreateMovieDto createMovieDto) {
-        Movie movie = movieMapper.mapToEntity(createMovieDto);
+        Movie movie = movieMapper.convert(createMovieDto);
         movieRepository.save(movie);
     }
 
     @Override
     public void deleteMovie(Long movieId) {
-        movieRepository.deleteById(movieId);
+        Optional<Movie> movieOptional = movieRepository.findById(movieId);
+        movieOptional.ifPresent(movieRepository::delete);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwsztar.domain.dto.CreateMovieDto;
+import pl.edu.pwsztar.domain.dto.MovieCounterDto;
 import pl.edu.pwsztar.domain.dto.MovieDto;
 import pl.edu.pwsztar.service.MovieService;
 
@@ -53,4 +54,14 @@ public class MovieApiController {
         movieService.deleteMovie(movieId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @GetMapping(value = "/movies/counter", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<MovieCounterDto> countMovies() {
+        LOGGER.info("count movies");
+
+        // TODO: Prosze dokonczyc implementacje
+        return new ResponseEntity<>(new MovieCounterDto(), HttpStatus.OK);
+    }
+
 }
