@@ -42,7 +42,7 @@ public class MovieApiController {
     public ResponseEntity<Void> createMovie(@RequestBody CreateMovieDto createMovieDto) {
         LOGGER.info("create movie: {}", createMovieDto);
 
-        movieService.creatMovie(createMovieDto);
+        movieService.createMovie(createMovieDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -60,8 +60,7 @@ public class MovieApiController {
     public ResponseEntity<MovieCounterDto> countMovies() {
         LOGGER.info("count movies");
 
-        // TODO: Prosze dokonczyc implementacje
-        return new ResponseEntity<>(new MovieCounterDto(), HttpStatus.OK);
+        return new ResponseEntity<>(movieService.countMovies(), HttpStatus.OK);
     }
 
 }
