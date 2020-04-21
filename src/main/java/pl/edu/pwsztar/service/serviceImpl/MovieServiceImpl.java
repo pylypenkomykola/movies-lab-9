@@ -46,6 +46,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public List<MovieDto> findAllByYearDesc() {
+        List<Movie> movies = movieRepository.findByOrderByYearDesc();
+        return movieListMapper.convert(movies);
+    }
+
+    @Override
     public void createMovie(CreateMovieDto createMovieDto) {
         Movie movie = movieMapper.convert(createMovieDto);
         movieRepository.save(movie);
