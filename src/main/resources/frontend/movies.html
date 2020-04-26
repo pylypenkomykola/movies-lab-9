@@ -8,14 +8,16 @@
 
 		<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
 		<script type="text/javascript">
-
+            var deleteValues = [];
+            var deleteView = false;
 			// get all movies
 			$.get('http://127.0.0.1:8080/api/movies', {}, function (data, textStatus, jqXHR) {
 			    console.log('data: ', data);
     			var html = '';
         		$.each(data, function(key, value) {
 
-        	    	html += '<div class="card">';
+        	    	html += '<div class="card" id="'+value.movieId+'">';
+        	    	html += '<input type="checkbox" class="checkbox" style="display: none" value="'+value.movieId+'"/></span>';
   					html += '<img src="' + (isImage(value.image) ? value.image : getPlaceholder()) + '" alt="movie" style="width:100%">';
   					html += '<h3>' + value.title + '</h3>';
   					html += '<p class="title">Rok produkcji</p>';
@@ -25,6 +27,26 @@
         		});
 
         		$('#movies').html(html);
+
+                $('input[type="checkbox"]').click(function(){
+                    if($(this).is(":checked")){
+                        var checked = $(this).val();
+                        deleteValues.push(checked);
+						$("#"+checked).css('background-color','#3498DB');
+                    }
+                    else if($(this).is(":not(:checked)")){
+                       var unchecked = $(this).val();
+                       deleteValues = jQuery.grep(deleteValues, function(value) {
+                            return value !== unchecked;
+					   });
+                        $("#"+unchecked).css('background-color','white');
+                    }
+                });
+
+                $('#delete-movies').click(function () {
+                    deleteView = !deleteView;
+                    $('input[type="checkbox"],#ready-to-delete').css('display',(deleteView ? 'block' : 'none'));
+                });
 			}).fail(function() {
 		    	$('#movies').html("<div style='text-align: center; color: red;'>Mam problem z wyświetleniem danych... :/ (musisz uruchomić aplikacje za pomocą MAVEN)</div>");
 			});
@@ -53,6 +75,23 @@
             	});
         	}
 
+        	function completeDelete() {
+				$.ajax({
+					url: 'http://127.0.0.1:8080/api/movies/delete',
+					type: 'delete',
+                    contentType: 'application/json',
+					data: deleteValues,
+                    success: function () {
+                        console.log('Movie deleted: ', deleteValues);
+                        location.reload();
+                    },
+                    error: function() {
+                        console.log('Coś nie tak');
+                    }
+
+				})
+            }
+
 			function isImage(url) {
             	return url.indexOf(".jpg") !== -1 || url.indexOf(".png") !== -1;
 			}
@@ -68,11 +107,17 @@
                 });
 			}
 
+
         	$(document).ready(function() {
             	$('#add-movie').click(function() {
                 	window.location.href='add-movie.html';
-            	})
+            	});
+            	$('#cancel').click(function () {
+					$('input[type="checkbox"],#ready-to-delete').css('display', 'none');
+                    deleteView = false;
+                })
         	});
+
 		</script>
 
 		<style type="text/css">
@@ -101,6 +146,13 @@
       			text-align: center;
       			display: inline-block;
     		}
+
+			.checkbox{
+				display: flex;
+				justify-items: flex-start;
+				transform: scale(1.3,1.3);
+				color: blue;
+			}
 
     		.title {
       			color: grey;
@@ -144,8 +196,15 @@
 	<body>
 		<h1>Biblioteka filmów</h1>
 		<div id="movies-counter" class="movies-counter" style="z-index: 1"></div>
-		<div style="text-align: right; margin-bottom: 2px;">
+		<div style="text-align: right; margin-bottom: 2px;" >
 			<button style="width: 150px;" class="btn" id="add-movie">+ Dodaj</button>
+			<div>
+				<button style="width: 150px;" class="btn" id="delete-movies">- Usuń</button>
+				<div style="display: none;" class="" id="ready-to-delete">
+					<button style="width: 30px; margin-right: 85px" class="btn" onclick="completeDelete()" id="delete">O</button>
+					<button style="width: 30px;" class="btn" id="cancel">X</button>
+				</div>
+			</div>
 		</div>
 		<div style="text-align: center">
 			<a style="width: 150px;" class="btn" href="http://127.0.0.1:8080/api/download-txt">-> Export TXT</a>
