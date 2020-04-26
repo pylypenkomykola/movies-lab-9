@@ -46,6 +46,9 @@
                 $('#delete-movies').click(function () {
                     deleteView = !deleteView;
                     $('input[type="checkbox"],#ready-to-delete').css('display',(deleteView ? 'block' : 'none'));
+                    deleteValues = [];
+                    $('.card').css('background-color','white');
+                    $('input[type="checkbox"]').prop("checked", false);
                 });
 			}).fail(function() {
 		    	$('#movies').html("<div style='text-align: center; color: red;'>Mam problem z wyświetleniem danych... :/ (musisz uruchomić aplikacje za pomocą MAVEN)</div>");
@@ -76,6 +79,7 @@
         	}
 
         	function completeDelete() {
+                console.log('Movie deleted: ', deleteValues);
 				$.ajax({
 					url: 'http://127.0.0.1:8080/api/movies/delete',
 					type: 'delete',
@@ -115,6 +119,9 @@
             	$('#cancel').click(function () {
 					$('input[type="checkbox"],#ready-to-delete').css('display', 'none');
                     deleteView = false;
+                    deleteValues = [];
+                    $('.card').css('background-color','white');
+                    $('input[type="checkbox"]').prop("checked", false);
                 })
         	});
 
