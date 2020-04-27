@@ -81,7 +81,7 @@
         	function completeDelete() {
                 console.log('Movie deleted: ', deleteValues);
 				$.ajax({
-					url: 'http://127.0.0.1:8080/api/movies/delete',
+					url: `http://127.0.0.1:8080/api/movies/delete/${deleteValues}`,
 					type: 'delete',
                     contentType: 'application/json',
 					data: deleteValues,
@@ -94,6 +94,8 @@
                     }
 
 				})
+
+				console.log(deleteValues)
             }
 
 			function isImage(url) {

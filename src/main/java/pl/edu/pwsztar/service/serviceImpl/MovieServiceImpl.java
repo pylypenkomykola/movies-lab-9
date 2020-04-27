@@ -64,6 +64,14 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public void deleteMovies(List<Long> ids) {
+        for (Long id : ids) {
+            Optional<Movie> movieOptional = movieRepository.findById(id);
+            movieOptional.ifPresent(movieRepository::delete);
+        }
+    }
+
+    @Override
     public MovieCounterDto countMovies() {
         return movieCounterMapper.convert(movieRepository.count());
     }
