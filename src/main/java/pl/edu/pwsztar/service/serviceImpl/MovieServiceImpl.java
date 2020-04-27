@@ -1,5 +1,6 @@
 package pl.edu.pwsztar.service.serviceImpl;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,13 @@ public class MovieServiceImpl implements MovieService {
     public void deleteMovie(Long movieId) {
         Optional<Movie> movieOptional = movieRepository.findById(movieId);
         movieOptional.ifPresent(movieRepository::delete);
+    }
+
+    @Override
+    public void deleteMovies(List<Long> movies){
+       for(Long movieId: movies){
+            deleteMovie(movieId);
+        }
     }
 
     @Override

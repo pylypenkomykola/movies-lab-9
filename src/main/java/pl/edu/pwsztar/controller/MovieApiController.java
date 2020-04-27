@@ -63,4 +63,13 @@ public class MovieApiController {
         return new ResponseEntity<>(movieService.countMovies(), HttpStatus.OK);
     }
 
+    @CrossOrigin
+    @DeleteMapping(value = "/movies/delete/{movies}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Void> deleteMovies(@PathVariable List<Long> movies){
+        LOGGER.info("delete movies: {}", movies);
+
+        movieService.deleteMovies(movies);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
