@@ -46,6 +46,7 @@
                 $('#delete-movies').click(function () {
                     deleteView = !deleteView;
                     $('input[type="checkbox"],#ready-to-delete').css('display',(deleteView ? 'block' : 'none'));
+                    $(this).html(deleteView ? 'Anuluj' : '- Usuń');
                     deleteValues = [];
                     $('.card').css('background-color','white');
                     $('input[type="checkbox"]').prop("checked", false);
@@ -80,22 +81,20 @@
 
         	function completeDelete() {
                 console.log('Movie deleted: ', deleteValues);
-				$.ajax({
-					url: 'http://127.0.0.1:8080/api/movies/delete',
-					type: 'delete',
-                    contentType: 'application/json',
-					data: deleteValues,
-                    success: function () {
-                        console.log('Movie deleted: ', deleteValues);
-                        location.reload();
-                    },
-                    error: function() {
-                        console.log('Coś nie tak');
-                    }
-
-				})
+		$.ajax({
+			url: `http://127.0.0.1:8080/api/movies/delete/${deleteValues}`,
+			type: 'delete',
+                    	contentType: 'application/json',
+                    	success: function () {
+                        	console.log('Movie deleted: ', deleteValues);
+                        	location.reload();
+                    	},
+			error: function() {
+				console.log('Coś nie tak');
+			}
+		});
+		console.log(deleteValues)
             }
-
 			function isImage(url) {
             	return url.indexOf(".jpg") !== -1 || url.indexOf(".png") !== -1;
 			}
@@ -116,13 +115,6 @@
             	$('#add-movie').click(function() {
                 	window.location.href='add-movie.html';
             	});
-            	$('#cancel').click(function () {
-					$('input[type="checkbox"],#ready-to-delete').css('display', 'none');
-                    deleteView = false;
-                    deleteValues = [];
-                    $('.card').css('background-color','white');
-                    $('input[type="checkbox"]').prop("checked", false);
-                })
         	});
 
 		</script>
@@ -208,8 +200,7 @@
 			<div>
 				<button style="width: 150px;" class="btn" id="delete-movies">- Usuń</button>
 				<div style="display: none;" class="" id="ready-to-delete">
-					<button style="width: 30px; margin-right: 85px" class="btn" onclick="completeDelete()" id="delete">O</button>
-					<button style="width: 30px;" class="btn" id="cancel">X</button>
+					<button style="width: 150px;" class="btn" onclick="completeDelete()" id="delete">Akceptuj</button>
 				</div>
 			</div>
 		</div>
