@@ -19,6 +19,4 @@ public interface MovieService {
     void deleteMovies(List<Long> ids);
 
     MovieCounterDto countMovies();
-
-    void deleteMovies(List<Long> deleteMovies);
 }
